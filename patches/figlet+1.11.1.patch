@@ -1,0 +1,14 @@
+diff --git a/node_modules/figlet/dist/node-figlet.cjs b/node_modules/figlet/dist/node-figlet.cjs
+index d4b3276..94a93d3 100644
+--- a/node_modules/figlet/dist/node-figlet.cjs
++++ b/node_modules/figlet/dist/node-figlet.cjs
+@@ -26,8 +26,7 @@ fs = __toESM(fs, 1);
+ let path = require("path");
+ path = __toESM(path, 1);
+ //#region src/node-figlet.ts
+-var __filename$1 = (0, require("url").fileURLToPath)({}.url);
+-var __dirname$1 = path.dirname(__filename$1);
++var __dirname$1 = __dirname;
+ var fontPath = path.join(__dirname$1, "/../fonts/");
+ var nodeFiglet = require_figlet.figlet;
+ nodeFiglet.defaults({ fontPath });
