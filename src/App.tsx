@@ -29,6 +29,7 @@ import Dashboard from "./pages/Dashboard";
 import { BookOpen, Home } from "lucide-react";
 import SubjectList from "./pages/subjects/list";
 import SubjectsCreate from "./pages/subjects/create";
+import SubjectsUpdate from "./pages/subjects/update";
 
 function App() {
   return (
