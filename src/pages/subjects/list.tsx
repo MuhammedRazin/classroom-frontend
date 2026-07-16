@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select.tsx';
 import { Search } from 'lucide-react';
 import { useState, useMemo } from 'react';
-import { DEPT_OPTIONS } from '../../constants/index';
+import { DEPARTMENT_OPTIONS } from '../../constants/index';
 import React from 'react';
 import { CreateButton } from '@/components/refine-ui/buttons/create';
 import { DataTable } from '@/components/refine-ui/data-table/data-table';
@@ -18,7 +18,7 @@ const SubjectList = () => {
     const [SearchQuery, setSearchQuery] = useState('');
     const [selectedDepartment, setSelectedDepartment] = useState('all');
 
-    const departmentFilter = selectedDepartment === 'all' ? [] : [ { field: 'dept', operator: 'eq' as const, value: selectedDepartment } ];
+    const departmentFilter = selectedDepartment === 'all' ? [] : [ { field: 'department', operator: 'eq' as const, value: selectedDepartment } ];
     const searchFilter = SearchQuery ? [ { field: 'name', operator: 'contains' as const, value: SearchQuery } ] : [];
 
     const subjectTable = useTable<Subject>({
@@ -40,7 +40,7 @@ const SubjectList = () => {
             },
             {
                 id: 'department',
-                accessorKey: 'dept',
+                accessorKey: 'department.name',
                 size: 150,
                 header: () => <p className='column-title'>Department</p>,
                 cell: ({ getValue }) => <Badge variant="secondary">{getValue<string>()}</Badge>
@@ -98,7 +98,7 @@ const SubjectList = () => {
                                 All Department
                             </SelectItem>
                             {
-                                DEPT_OPTIONS.map((dept) => (
+                                DEPARTMENT_OPTIONS.map((dept) => (
                                     <SelectItem value={dept.value} key={dept.value}>
                                         {dept.label}
                                     </SelectItem>
