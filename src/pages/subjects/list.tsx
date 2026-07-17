@@ -3,8 +3,8 @@ import { ListView } from '@/components/refine-ui/views/list-view';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select.tsx';
 import { Search } from 'lucide-react';
-import { useState, useMemo } from 'react';
-import { DEPARTMENT_OPTIONS } from '../../constants/index';
+import { useState, useMemo, useEffect } from 'react';
+import { fetchDepartmentNames } from '../../constants/departmentNames';
 import React from 'react';
 import { CreateButton } from '@/components/refine-ui/buttons/create';
 import { DataTable } from '@/components/refine-ui/data-table/data-table';
@@ -17,9 +17,16 @@ const SubjectList = () => {
 
     const [SearchQuery, setSearchQuery] = useState('');
     const [selectedDepartment, setSelectedDepartment] = useState('all');
+    const [departmentNames, setdepartmentNames] = useState<string[]>([]);
 
     const departmentFilter = selectedDepartment === 'all' ? [] : [ { field: 'department', operator: 'eq' as const, value: selectedDepartment } ];
     const searchFilter = SearchQuery ? [ { field: 'name', operator: 'contains' as const, value: SearchQuery } ] : [];
+
+    useEffect(() => {
+        fetchDepartmentNames()
+        .then(setdepartmentNames)
+        .catch((error) => {console.error(error)});
+    },[]);
 
     const subjectTable = useTable<Subject>({
         columns: useMemo<ColumnDef<Subject>[]>(()=>[
@@ -98,9 +105,9 @@ const SubjectList = () => {
                                 All Department
                             </SelectItem>
                             {
-                                DEPARTMENT_OPTIONS.map((dept) => (
-                                    <SelectItem value={dept.value} key={dept.value}>
-                                        {dept.label}
+                                departmentNames.map((dept) => (
+                                    <SelectItem value={dept} key={dept}>
+                                        {dept}
                                     </SelectItem>
                                 ))
                             }
