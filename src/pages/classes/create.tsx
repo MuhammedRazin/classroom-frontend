@@ -100,7 +100,7 @@ const Create = () => {
                                 <FormField 
                                     control={control}
                                     name="bannerUrl"
-                                    render={( field ) => (
+                                    render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>
                                                 Banner Image <span className="text-orange-600">*</span>
@@ -108,7 +108,7 @@ const Create = () => {
                                             <FormControl>
                                                 <UploadWidget 
                                                     value={field.value ? { url: field.value, publicId: bannerPublicId ?? "" } : null }
-                                                    onChange={( field: any, file: any ) => { setBannerImage(field,file)}}
+                                                    onChange={(file) => setBannerImage(field, file)}
                                                 />
                                             </FormControl>
                                             <FormMessage />
