@@ -57,10 +57,11 @@ export const ALLOWED_TYPES = [
 
 const getEnvVar = (key: string): string => {
     const value = (import.meta.env as Record<string, string | undefined>)[key];
-    if (!value || !value.trim()) {
+    const trimmedValue = value?.trim();
+    if (!trimmedValue) {
         throw new Error(`Missing environment variable: ${key}`);
     }
-    return value;
+    return trimmedValue;
 };
 
 export const CLOUDINARY_UPLOAD_URL = getEnvVar("VITE_CLOUDINARY_UPLOAD_URL");
