@@ -108,7 +108,7 @@ const Create = () => {
                                             <FormControl>
                                                 <UploadWidget 
                                                     value={field.value ? { url: field.value, publicId: bannerPublicId ?? "" } : null }
-                                                    onChange={(file) => setBannerImage(field, file)}
+                                                    onChange={(file: any) => setBannerImage(field, file)}
                                                 />
                                             </FormControl>
                                             <FormMessage />
