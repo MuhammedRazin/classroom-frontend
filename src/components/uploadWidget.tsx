@@ -1,31 +1,33 @@
 import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from '@/constants';
 import { UploadWidgetValue, UploadWidgetProps } from '@/types';
 import { UploadCloud } from 'lucide-react';
-import React, { useEffect, useRef , useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
-const UploadWidget: React.FC<UploadWidgetProps> = ({ value = null , onChange , disabled = false}) => {
-    
+const UploadWidget: React.FC<UploadWidgetProps> = ({ value = null, onChange, disabled = false }) => {
+
     const widgetRef = useRef<CloudinaryWidget | null>(null);
+    //Stores the reference to the initialized Cloudinary widget instance to open/close the modal.
     const onChangeRef = useRef<UploadWidgetProps['onChange'] | undefined>(onChange);
-    
+    //Stores the latest onChange function. This prevents having to re-create the Cloudinary widget instance if the parent's onChange callback changes references.  
     const [preview, setPreview] = useState<UploadWidgetValue | null>(value);
+
     //const [deleteToken, setDeleteToken] = useState<string | null>(null);
     //const [isRemoving , setIsRemoving] = useState(false);
 
     useEffect(() => {
         setPreview(value);
         //if(!value) setDeleteToken(null);
-    },[value]);
+    }, [value]);
 
     useEffect(() => {
         onChangeRef.current = onChange;
-    },[onChange]);
+    }, [onChange]);
 
     useEffect(() => {
-        if(typeof window === 'undefined') return;
+        if (typeof window === 'undefined') return;
 
         const initializeWidget = () => {
-            if(!window.cloudinary || widgetRef.current) return false;
+            if (!window.cloudinary || widgetRef.current) return false;
 
             widgetRef.current = window.cloudinary.createUploadWidget({
                 cloudName: CLOUDINARY_CLOUD_NAME,
@@ -35,34 +37,34 @@ const UploadWidget: React.FC<UploadWidgetProps> = ({ value = null , onChange , d
                 maxFileSize: 5000000,
                 clientAllowedFormats: ['png', 'jpg', 'jpeg', 'webp'],
             }, (error, result) => {
-                if(!error && result.event === 'success') {
+                if (!error && result.event === 'success') {
                     const payload: UploadWidgetValue = {
                         url: result.info.secure_url,
                         publicId: result.info.public_id,
                     }
                     setPreview(payload);
                     //setDeleteToken(result.info.delete_token ?? null);
-                    
+
                     onChangeRef.current?.(payload);
-                
+
                 }
 
             });
 
             return true;
         }
-        if(initializeWidget()) return;
+        if (initializeWidget()) return;
 
         const intervalId = window.setInterval(() => {
-            if(initializeWidget()) {
+            if (initializeWidget()) {
                 window.clearInterval(intervalId);
             }
-        },500)
+        }, 500)
 
         return () => window.clearInterval(intervalId);
 
     }, [])
-    
+
 
     const openWidget = () => {
         if (!disabled) widgetRef.current?.open();
@@ -71,35 +73,37 @@ const UploadWidget: React.FC<UploadWidgetProps> = ({ value = null , onChange , d
     //const removeFromCloudinary = async () => {}
 
 
-  return (
-    <div className='space-y-2'>
-        {preview 
-        ?   <div className='upload-preview'>
-                <img src={preview.url} alt="Upload File" />
-            </div>
-        :   <div role='button'
-                 className='upload-dropzone'
-                 tabIndex={0}
-                 onClick={openWidget}
-                 onKeyDown={(event) => {
-                    if(event.key === 'Enter') {
-                        event.preventDefault();
-                        openWidget();
-                    }
-                 }}
-            >
-                <div className='upload-prompt'>
-                    <UploadCloud className='icon'/>
-                    <div>
-                        <p>Click To upload photo</p>
-                        <p>PNG , JPG up to 5MB</p>
-                    </div>
+    return (
+        <div className='space-y-2'>
+            {preview
+                ?
+                <div className='upload-preview'>
+                    <img src={preview.url} alt="Upload File" />
                 </div>
+                :
+                <div role='button'
+                    className='upload-dropzone'
+                    tabIndex={0}
+                    onClick={openWidget}
+                    onKeyDown={(event) => {
+                        if (event.key === 'Enter') {
+                            event.preventDefault();
+                            openWidget();
+                        }
+                    }}
+                >
+                    <div className='upload-prompt'>
+                        <UploadCloud className='icon' />
+                        <div>
+                            <p>Click To upload photo</p>
+                            <p>PNG , JPG up to 5MB</p>
+                        </div>
+                    </div>
 
-            </div>    
-        }
-    </div>
-  )
+                </div>
+            }
+        </div>
+    )
 }
 
 export default UploadWidget

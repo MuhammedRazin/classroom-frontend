@@ -1,14 +1,14 @@
-import {CreateView} from "@/components/refine-ui/views/create-view.tsx";
-import {Breadcrumb} from "@/components/refine-ui/layout/breadcrumb.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {useBack} from "@refinedev/core";
-import {Separator} from "@/components/ui/separator.tsx";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card.tsx"
+import { CreateView } from "@/components/refine-ui/views/create-view.tsx";
+import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { useBack } from "@refinedev/core";
+import { Separator } from "@/components/ui/separator.tsx";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.tsx"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "@refinedev/react-hook-form"
-import {classSchema} from "@/lib/schema.ts";
+import { classSchema } from "@/lib/schema.ts";
 import * as z from "zod";
-import { teachers , subjects } from "@/constants";
+import { teachers, subjects } from "@/constants";
 
 import {
     Form,
@@ -20,23 +20,23 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {Label} from "@/components/ui/label.tsx";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
-import {Textarea} from "@/components/ui/textarea.tsx";
-import {Loader2} from "lucide-react";
+import { Label } from "@/components/ui/label.tsx";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
+import { Textarea } from "@/components/ui/textarea.tsx";
+import { Loader2 } from "lucide-react";
 import UploadWidget from "@/components/uploadWidget";
 
 
 const Create = () => {
     const back = useBack();
-    const setBannerImage = ( field , file ) => {
+    const setBannerImage = (field, file) => {
         if (file) {
             field.onChange(file.url);
             form.setValue('bannerCldPubId', file.publicId, {
                 shouldValidate: true,
                 shouldDirty: true,
             })
-        }else {
+        } else {
             field.onChange('');
             form.setValue('bannerCldPubId', '', {
                 shouldValidate: true,
@@ -58,7 +58,7 @@ const Create = () => {
 
     const {
         handleSubmit,
-        formState: { isSubmitting , errors },
+        formState: { isSubmitting, errors },
         control,
     } = form;
 
@@ -97,7 +97,7 @@ const Create = () => {
                     <CardContent className="mt-7">
                         <Form {...form}>
                             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                                <FormField 
+                                <FormField
                                     control={control}
                                     name="bannerUrl"
                                     render={({ field }) => (
@@ -106,20 +106,20 @@ const Create = () => {
                                                 Banner Image <span className="text-orange-600">*</span>
                                             </FormLabel>
                                             <FormControl>
-                                                <UploadWidget 
-                                                    value={field.value ? { url: field.value, publicId: bannerPublicId ?? "" } : null }
+                                                <UploadWidget
+                                                    value={field.value ? { url: field.value, publicId: bannerPublicId ?? "" } : null}
                                                     onChange={(file) => setBannerImage(field, file)}
                                                 />
                                             </FormControl>
                                             <FormMessage />
                                             {
                                                 errors.bannerCldPubId && !errors.bannerUrl && (
-                                                    <p>{ errors.bannerCldPubId.message?.toString() }</p>
+                                                    <p>{errors.bannerCldPubId.message?.toString()}</p>
                                                 )
                                             }
                                         </FormItem>
                                     )}
-                                
+
                                 />
 
                                 <FormField
