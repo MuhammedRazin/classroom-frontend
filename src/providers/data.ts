@@ -39,6 +39,12 @@ const options: CreateDataProviderOptions = {
           if (field === 'department') params.department = value;
           if (field === 'name' || field === 'code') params.search = value;
         }
+
+        if (resource === 'users') {
+          if (field === 'role' && filter.operator === 'eq') {
+            params.role = value;
+          }
+        }
       });
 
       return params;
@@ -66,9 +72,15 @@ const options: CreateDataProviderOptions = {
     buildBodyParams: async ({variables}) => variables,
 
     mapResponse: async (response) => {
+      if (!response.ok) throw await buildHttpError(response);
+
       const json: CreateResponse = await response.json();
 
-      return json?.data ?? [];
+      if (json?.data === undefined || json?.data === null) {
+        throw new Error('Create response is missing data');
+      }
+
+      return json.data;
     }
   }
 }
