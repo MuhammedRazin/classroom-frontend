@@ -106,5 +106,8 @@
   },
   "refine": {
     "projectId": "uSwimP-IkvOgz-tyz7fA"
+  },
+  "overrides": {
+    "figlet": "1.7.0"
   }
 }
